@@ -1,22 +1,23 @@
 package com.sky.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serializable;
 
 @Data
+@Schema(description = "分类分页查询DTO")
 public class CategoryPageQueryDTO implements Serializable {
 
-    //页码
+    @Schema(description = "页码", required = true)
     private int page;
 
-    //每页记录数
+    @Schema(description = "每页记录数", required = true)
     private int pageSize;
 
-    //分类名称
+    @Schema(description = "分类名称")
     private String name;
 
-    //分类类型 1菜品分类  2套餐分类
+    @Schema(description = "分类类型 1菜品分类  2套餐分类")
     private Integer type;
-
 }
