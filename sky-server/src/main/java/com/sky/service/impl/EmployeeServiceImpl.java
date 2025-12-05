@@ -1,18 +1,24 @@
 package com.sky.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.sky.constant.MessageConstant;
+import com.sky.constant.PasswordConstant;
 import com.sky.constant.StatusConstant;
+import com.sky.dto.EmployeeDTO;
 import com.sky.dto.EmployeeLoginDTO;
+import com.sky.dto.EmployeePageQueryDTO;
 import com.sky.entity.Employee;
 import com.sky.exception.AccountLockedException;
 import com.sky.exception.AccountNotFoundException;
 import com.sky.exception.PasswordErrorException;
 import com.sky.mapper.EmployeeMapper;
+import com.sky.result.PageResult;
 import com.sky.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
+import org.springframework.util.StringUtils;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -20,12 +26,6 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Autowired
     private EmployeeMapper employeeMapper;
 
-    /**
-     * 员工登录
-     *
-     * @param employeeLoginDTO
-     * @return
-     */
     public Employee login(EmployeeLoginDTO employeeLoginDTO) {
         String username = employeeLoginDTO.getUsername();
         String password = employeeLoginDTO.getPassword();
@@ -58,4 +58,54 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employee;
     }
 
+    @Override
+    public void save(EmployeeDTO employeeDTO) {
+        Employee employee = Employee.builder()
+                .username(employeeDTO.getUsername())
+                .name(employeeDTO.getName())
+                .password(DigestUtils.md5DigestAsHex(PasswordConstant.DEFAULT_PASSWORD.getBytes()))
+                .phone(employeeDTO.getPhone())
+                .sex(employeeDTO.getSex())
+                .idNumber(employeeDTO.getIdNumber())
+                .status(StatusConstant.ENABLE)
+                .build();
+        employeeMapper.insert(employee);
+    }
+
+    @Override
+    public PageResult<Employee> page(EmployeePageQueryDTO queryDTO) {
+        Page<Employee> page = new Page<>(queryDTO.getPage(), queryDTO.getPageSize());
+        LambdaQueryWrapper<Employee> queryWrapper = new LambdaQueryWrapper<>();
+        queryWrapper.like(StringUtils.hasLength(queryDTO.getName()), Employee::getName, queryDTO.getName())
+                .orderByDesc(Employee::getCreateTime);
+        page = employeeMapper.selectPage(page, queryWrapper);
+        return new PageResult<>(page.getTotal(), page.getRecords());
+    }
+
+    @Override
+    public void updateStatus(Integer status, Long id) {
+        Employee employee = Employee.builder()
+                .id(id)
+                .status(status)
+                .build();
+        employeeMapper.updateById(employee);
+    }
+
+    @Override
+    public Employee getById(Long id) {
+        return employeeMapper.selectById(id);
+    }
+
+    @Override
+    public void update(EmployeeDTO employeeDTO) {
+        Employee employee = Employee.builder()
+                .id(employeeDTO.getId())
+                .username(employeeDTO.getUsername())
+                .name(employeeDTO.getName())
+                .phone(employeeDTO.getPhone())
+                .sex(employeeDTO.getSex())
+                .idNumber(employeeDTO.getIdNumber())
+                .build();
+        employeeMapper.updateById(employee);
+    }
 }
