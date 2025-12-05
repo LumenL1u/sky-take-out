@@ -1,0 +1,2 @@
+# 将nginx目录标记为vendored，忽略其语言统计
+nginx-1.20.2/** linguist-vendored
