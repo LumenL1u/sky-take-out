@@ -31,11 +31,16 @@ logging:
 sky:
   jwt:
     # 设置jwt签名加密时使用的秘钥
-    admin-secret-key: itcast
+    admin-secret-key: skytakeout
     # 设置jwt过期时间，24小时
     admin-ttl: 86400000
     # 设置前端传递过来的令牌名称
     admin-token-name: token
+  alioss:
+    endpoint: ${sky.alioss.endpoint}
+    accessKeyId: ${sky.alioss.accessKeyId}
+    accessKeySecret: ${sky.alioss.accessKeySecret}
+    bucketName: ${sky.alioss.bucketName}
 
 springdoc:
   swagger-ui:

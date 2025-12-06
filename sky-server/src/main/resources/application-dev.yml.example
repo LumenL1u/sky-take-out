@@ -1,0 +1,23 @@
+sky:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    host: your_mysql_host
+    port: 3306
+    database: your_mysql_database
+    username: your_mysql_username
+    password: your_mysql_password
+  alioss:
+    endpoint: your-endpoint
+    access-key-id: your-access-key-id
+    access-key-secret: your-access-key-secret
+    bucket-name: your-bucket-name
+  wechat:
+    appid: your-appid
+    secret: your-secret
+    mchid: your-mchid
+    mch-serial-no: your-mch-serial-no
+    private-key-file-path: your-private-key-path
+    api-v3-key: your-api-v3-key
+    we-chat-pay-cert-file-path: your-cert-path
+    notify-url: your-notify-url
+    refund-notify-url: your-refund-notify-url

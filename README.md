@@ -126,17 +126,19 @@ mysql -u root -p sky_take_out < sql/sky.sql
 
 #### 2.3 修改数据库配置
 
-编辑 `sky-server/src/main/resources/application-dev.yml`：
+重命名 `sky-server/src/main/resources/` 目录下的 `application-dev.yml.example` 为 `application-dev.yml`
+
+编辑 `application-dev.yml`：
 
 ```yaml
 sky:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    host: localhost         # 修改为你的MySQL地址
-    port: 3306              # 修改为你的MySQL端口
-    database: sky_take_out  # 数据库名称
-    username: root          # 修改为你的MySQL用户名
-    password: 123456        # 修改为你的MySQL密码
+    host: your_mysql_host           # 修改为你的MySQL地址
+    port: 3306                      # 修改为你的MySQL端口
+    database: your_mysql_database   # 数据库名称
+    username: your_mysql_username   # 修改为你的MySQL用户名
+    password: your_mysql_password   # 修改为你的MySQL密码
 ```
 
 ### 3. 配置第三方服务（可选）
