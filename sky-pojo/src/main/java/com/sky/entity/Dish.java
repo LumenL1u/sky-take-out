@@ -24,7 +24,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Schema(description = "菜品")
 public class Dish implements Serializable {
-
+    @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "主键值")
