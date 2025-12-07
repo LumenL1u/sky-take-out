@@ -130,7 +130,7 @@ public class CategoryServiceImpl implements CategoryService {
      */
     public List<Category> list(Integer type) {
         return categoryMapper.selectList(new LambdaQueryWrapper<Category>()
-                .eq(Category::getType, type)
+                .eq(type != null, Category::getType, type)
                 .orderByAsc(Category::getCreateTime));
     }
 }

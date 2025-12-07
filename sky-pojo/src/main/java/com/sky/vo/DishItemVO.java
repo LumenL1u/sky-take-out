@@ -1,5 +1,6 @@
 package com.sky.vo;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,17 +12,18 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "菜品项")
 public class DishItemVO implements Serializable {
 
-    //菜品名称
+    @Schema(description = "菜品名称")
     private String name;
 
-    //份数
+    @Schema(description = "份数")
     private Integer copies;
 
-    //菜品图片
+    @Schema(description = "菜品图片")
     private String image;
 
-    //菜品描述
+    @Schema(description = "菜品描述")
     private String description;
 }

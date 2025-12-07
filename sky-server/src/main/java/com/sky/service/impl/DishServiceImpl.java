@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -139,5 +140,29 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
 
         // 删除菜品
         removeByIds(ids);
+    }
+
+    @Override
+    public List<DishVO> listWithFlavor(Long categoryId) {
+        List<Dish> dishList = list(new LambdaQueryWrapper<Dish>()
+                .eq(Dish::getCategoryId, categoryId)
+                .eq(Dish::getStatus, StatusConstant.ENABLE));
+        List<DishVO> dishVOList = new ArrayList<>();
+        for (Dish d : dishList) {
+            List<DishFlavor> flavors = dishFlavorService.list(new LambdaQueryWrapper<DishFlavor>()
+                    .eq(DishFlavor::getDishId, d.getId()));
+            DishVO dishVO = DishVO.builder()
+                    .id(d.getId())
+                    .name(d.getName())
+                    .categoryId(d.getCategoryId())
+                    .price(d.getPrice())
+                    .image(d.getImage())
+                    .description(d.getDescription())
+                    .status(d.getStatus())
+                    .flavors(flavors)
+                    .build();
+            dishVOList.add(dishVO);
+        }
+        return dishVOList;
     }
 }
