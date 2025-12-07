@@ -139,6 +139,11 @@ sky:
     database: your_mysql_database   # 数据库名称
     username: your_mysql_username   # 修改为你的MySQL用户名
     password: your_mysql_password   # 修改为你的MySQL密码
+  redis:
+    host: your_redis_host           # 修改为你的Redis地址
+    port: 6379                      # 修改为你的Redis端口
+    database: 0                     # 修改为你的Redis数据库
+    password: your_redis_password   # 修改为你的Redis密码
 ```
 
 ### 3. 配置第三方服务（可选）

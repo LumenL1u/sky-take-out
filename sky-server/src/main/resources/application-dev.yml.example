@@ -6,6 +6,11 @@ sky:
     database: your_mysql_database
     username: your_mysql_username
     password: your_mysql_password
+  redis:
+    host: your_redis_host
+    port: 6379
+    database: 0
+    password: your_redis_password
   alioss:
     endpoint: your-endpoint
     access-key-id: your-access-key-id
