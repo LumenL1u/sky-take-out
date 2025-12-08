@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sky.constant.MessageConstant;
+import com.sky.constant.RedisConstant;
 import com.sky.constant.StatusConstant;
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
@@ -18,6 +19,9 @@ import com.sky.service.DishFlavorService;
 import com.sky.service.DishService;
 import com.sky.vo.DishVO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +35,7 @@ import java.util.List;
  */
 @Service
 @RequiredArgsConstructor
+@CacheConfig(cacheNames = RedisConstant.DISH_CATEGORY)
 public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
         implements DishService {
 
@@ -39,6 +44,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
 
     @Override
     @Transactional
+    @CacheEvict(key = "#dishDTO.categoryId")
     public void save(DishDTO dishDTO) {
         Dish dish = Dish.builder()
                 .name(dishDTO.getName())
@@ -68,7 +74,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
         Dish dish = getById(id);
         List<DishFlavor> flavors = dishFlavorService.list(new LambdaQueryWrapper<DishFlavor>()
                 .eq(DishFlavor::getDishId, id));
-        DishVO dishVO = DishVO.builder()
+        return DishVO.builder()
                 .id(dish.getId())
                 .name(dish.getName())
                 .categoryId(dish.getCategoryId())
@@ -78,7 +84,6 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
                 .status(dish.getStatus())
                 .flavors(flavors)
                 .build();
-        return dishVO;
     }
 
     @Override
@@ -89,6 +94,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
     }
 
     @Override
+    @CacheEvict(key = "#root.target.getById(#id).categoryId")
     public void updateStatus(Integer status, Long id) {
         Dish dish = Dish.builder()
                 .id(id)
@@ -98,6 +104,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
     }
 
     @Override
+    @CacheEvict(key = "#dishDTO.categoryId")
     public void updateByDTO(DishDTO dishDTO) {
         Dish dish = Dish.builder()
                 .id(dishDTO.getId())
@@ -120,6 +127,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
 
     @Override
     @Transactional
+    @CacheEvict(allEntries = true)
     public void deleteBatch(List<Long> ids) {
         // 起售的菜品不能删除
         for (Long id : ids) {
@@ -143,7 +151,9 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish>
     }
 
     @Override
+    @Cacheable(key = "#categoryId")
     public List<DishVO> listWithFlavor(Long categoryId) {
+        // 从数据库中查询菜品信息
         List<Dish> dishList = list(new LambdaQueryWrapper<Dish>()
                 .eq(Dish::getCategoryId, categoryId)
                 .eq(Dish::getStatus, StatusConstant.ENABLE));

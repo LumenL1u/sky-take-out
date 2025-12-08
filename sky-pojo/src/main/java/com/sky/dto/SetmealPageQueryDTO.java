@@ -1,22 +1,27 @@
 package com.sky.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.io.Serializable;
 
 @Data
+@Schema(description = "套餐分页查询DTO")
 public class SetmealPageQueryDTO implements Serializable {
 
+    @Schema(description = "当前页")
     private int page;
 
+    @Schema(description = "每页条数")
     private int pageSize;
 
+    @Schema(description = "套餐名称")
     private String name;
 
-    //分类id
+    @Schema(description = "分类ID")
     private Integer categoryId;
 
-    //状态 0表示禁用 1表示启用
+    @Schema(description = "状态")
     private Integer status;
 
 }

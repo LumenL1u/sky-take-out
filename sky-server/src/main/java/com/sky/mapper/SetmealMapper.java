@@ -1,10 +1,13 @@
 package com.sky.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.sky.dto.SetmealPageQueryDTO;
 import com.sky.entity.Setmeal;
 import com.sky.vo.DishItemVO;
+import com.sky.vo.SetmealVO;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -17,9 +20,8 @@ public interface SetmealMapper extends BaseMapper<Setmeal> {
      * @param setmealId 套餐id
      * @return 菜品列表
      */
-    @Select("SELECT sd.name, sd.copies, d.image, d.description " +
-            "FROM setmeal_dish sd " +
-            "LEFT JOIN dish d ON sd.dish_id = d.id " +
-            "WHERE sd.setmeal_id = #{setmealId}")
     List<DishItemVO> getDishItemBySetmealId(Long setmealId);
+
+    Page<SetmealVO> pageQuery(@Param("page") Page<SetmealVO> page,
+                              @Param("queryDTO") SetmealPageQueryDTO queryDTO);
 }
