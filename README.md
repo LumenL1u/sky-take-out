@@ -181,7 +181,7 @@ sky:
 
 启动成功后，后端服务将运行在 `http://localhost:8080`
 
-### 5. 启动Nginx服务器
+### 5. 启动Nginx服务器（管理端）
 
 #### Windows系统
 
@@ -195,12 +195,18 @@ start nginx.exe
 # 或者双击 nginx.exe 文件启动
 ```
 
+### 5. 运行小程序（用户端）
+
+1. 打开微信开发者工具，下载地址：https://developers.weixin.qq.com/miniprogram/dev/devtools/download.html
+2. 选择本地项目
+3. 选择目录下的 `mp-weixin` 子目录
+4. 点击“编译并预览”
+
 ### 6. 访问系统
 
 启动完成后，可以通过以下地址访问：
 
-- **前端管理页面**: http://localhost
-- **前端用户页面**: http://localhost/user
+- **管理端页面**: http://localhost
 - **接口文档（Knife4j）**: http://localhost:8080/doc.html
 - **接口文档（Swagger）**: http://localhost:8080/swagger-ui.html
 
@@ -302,7 +308,6 @@ Content-Type: application/json
 
 - **0**: 操作成功
 - **1**: 操作失败
-- **2**: 未登录或登录过期
 
 ## 常见问题
 
