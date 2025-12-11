@@ -1,5 +1,7 @@
 package com.sky.vo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,13 +15,21 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Schema(description = "订单提交VO")
 public class OrderSubmitVO implements Serializable {
-    //订单id
+
+    private static final long serialVersionUID = 1L;
+
+    @Schema(description = "订单id")
     private Long id;
-    //订单号
+
+    @Schema(description = "订单号")
     private String orderNumber;
-    //订单金额
+
+    @Schema(description = "订单金额")
     private BigDecimal orderAmount;
-    //下单时间
+
+    @Schema(description = "下单时间")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime orderTime;
 }
